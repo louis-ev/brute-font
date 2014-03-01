@@ -1,1 +1,1 @@
-Insert some clever text here.\n
+Randomly generated shapes interpreted as "S" by an OCR algorithm.

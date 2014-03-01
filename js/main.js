@@ -1,3 +1,39 @@
+
+
+
+$(document).ready( function () {
+
+	for(var i=65;i<=90;i++) {
+		$('#imgs').append($('<div/>', {
+			"id": String.fromCharCode(i),
+			"class": "bloc-lettre"
+		}));
+	}
+
+	$('.exports').click( function () {
+		$(this).toggleClass('selected');
+	});
+
+	$('#startstop').click( function() {
+
+		if ( !$(this).hasClass('running') ) {
+			pleaserun = true;
+			$('#startstop').text("&#8595;stop&#8595;");
+			runOCRandShow()
+		} else {
+			$('#startstop').text("&#8595;start&#8595;");
+			pleaserun = false;
+		}
+
+		$(this).toggleClass('running');
+
+	});
+
+
+});
+
+
+
 /* ocrad */
 
 var c = document.getElementById('balls'),
@@ -20,46 +56,37 @@ function runOCR(image_data, raw_feed){
 	document.getElementById("output").className = 'processing'
 	worker.onmessage = function(e){
 
-		document.getElementById("output").className = ''
+		document.getElementById("output").className = '';
+		e.data = e.data.substring(0, 1);
+		console.log("e.data : " + e.data + " e.data.charCodeAt(0) : " + e.data.charCodeAt(0));
 
-		if (typeof e.data === 'string' && e.data !== '' ) {
+		if (typeof e.data === 'string' && e.data !== '' && ( 65 <= e.data.charCodeAt(0) && e.data.charCodeAt(0) <= 90 )) {
 
+			var ocrvalue = e.data;
 
- 			if ( e.data.indexOf("s") == 0 ) {
+			if ($('#imgs > #'+ ocrvalue + '').length) {
 
+				var topasteinto = $("#imgs > #"+ ocrvalue);
 				var newdiv = document.createElement('div');
 				var baliseimg = Canvas2Image.convertToImage(c, c.width, c.height, 'png');
 
-				countimg = "img" + count++;
-				newdiv.setAttribute("id", countimg);
-				newdiv.setAttribute('class', 'items');
-				newdiv.setAttribute('data-traits',  nbrtraits);
 		        newdiv.appendChild(baliseimg);
-		        $imgs.appendChild(newdiv);
-				$("#"+countimg).append("<h3 class='lettre'>" + e.data + "-" + nbrtraits + "</h3>");
+		        topasteinto.append(newdiv);
+				topasteinto.append("<h3 class='lettre'>" + ocrvalue + "-" + nbrtraits + "</h3>");
 
 				//		console.log(image_data);
 
-					// copie au serveur
-	/* 				console.log(image); */
+				if('innerText' in document.getElementById("text")){
+					document.getElementById("text").innerText = ocrvalue;
+				}else{
+					document.getElementById("text").textContent = ocrvalue;
+					topasteinto.append("<p>" + ocrvalue + "-2</p>");
+				}
 
+				topasteinto.click( function () {
+					$(this).toggleClass('selected');
+				});
 			}
-
-			if('innerText' in document.getElementById("text")){
-				document.getElementById("text").innerText = e.data;
-			}else{
-				document.getElementById("text").textContent = e.data;
-				$("#"+countimg).append("<p>" + e.data + "-2</p>");
-			}
-
-
-
-
-			$('#' + countimg).click( function () {
-				$(this).toggleClass('selected');
-			});
-
-
 
 
 		}
@@ -103,29 +130,3 @@ function runOCRandShow() {
 
 
 onload = init;
-
-$(document).ready( function () {
-	$('.exports').click( function () {
-		$(this).toggleClass('selected');
-	});
-
-	$('#startstop').click( function() {
-
-		if ( !$(this).hasClass('running') ) {
-			pleaserun = true;
-			$('#startstop').text("&#8595;stop&#8595;");
-			runOCRandShow()
-		} else {
-			$('#startstop').text("&#8595;start&#8595;");
-			pleaserun = false;
-		}
-
-		$(this).toggleClass('running');
-
-	});
-
-
-});
-
-
-
