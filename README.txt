@@ -1,4 +1,4 @@
-Randomly generated shapes interpreted as "S" by an OCR algorithm.
+Randomly generated shapes interpreted as letters by an OCR algorithm.
 
 Changelog
 —
