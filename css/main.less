@@ -11,8 +11,8 @@ textarea {
 }
 
 body {
-    background-color: #000;
-    color: #eee;
+    background-color: #232323;
+    color: #ECECEE;
     font-weight: 400;
     font-size: 1em;
     font-family: "ff-meta-web-pro";
@@ -74,74 +74,112 @@ body {
 	width:90%;
 }
 
-canvas#balls {
-	max-width: 89px;
-	max-height: 118px;
-	width: 100%;
-	height: 100%;
+#interface {
+	canvas#balls {
+		width: 89px;
+		height: 118px;
+		z-index: 100;
+		margin:5px;
+	}
+
+	#output {
+		height:50px;
+	}
+
+	.buttons #send {
+		display: inline-block;
+		border-bottom: 5px solid #7DC1C8;
+		color: #7DC1C8;
+		font-weight: 700;
+		font-size: 300%;
+		cursor: pointer;
+
+	}
 }
-
-#output {
-	height:50px;
-}
-
-.buttons #send {
-	display: inline-block;
-	border-bottom: 5px solid #7DC1C8;
-	color: #7DC1C8;
-	font-weight: 700;
-	font-size: 300%;
-	cursor: pointer;
-
-}
-
-
-
-
-
-
-
-
-
-
-
 
 #imgs {
 
+	display: -webkit-flex;
 	display: flex;
-	flex-wrap:wrap;
-	flex-direction: row;
+	-webkit-flex-flow: row wrap;
+	flex-flow: row wrap;
 
-	.items {
+	font-size: 80px;
+	color: #333;
+
+	-moz-user-select: -moz-none;
+	   -khtml-user-select: none;
+	   -webkit-user-select: none;
+
+	   /*
+	     Introduced in IE 10.
+	     See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+	   */
+	   -ms-user-select: none;
+	   user-select: none;
+
+	.bloc-lettre {
+	    position:relative;
 		width: 89px;
 		height: 118px;
-	  background: #888;
-	  color: #262524;
+		min-width: 10px;
+		margin: 5px;
+		z-index:1;
+
+		&.lastClicked {
+			z-index:100;
+		}
+
+		h3 {
+			margin: 0;
+			text-align: center;
+			font-weight: normal;
+		}
+
+		.exp-lettre {
+		    position:absolute;
+		    z-index:12;
+		    width:100%;
+		    opacity:1;
+		    bottom:0;
+		    -webkit-transition: all 1s;
+		    -moz-transition: all 1s;
+		    -ms-transition: all 1s;
+		    -o-transition: all 1s;
+		    transition: all 1s;
+
+			img {
+			    width:100%;
+			    height:auto;
+			    border: 1px solid black;
+			    display: block;
+			    margin:auto;
+			    position:relative;
+			    transition: width 1s;
+			}
+
+			&~.exp-lettre {
+				z-index:11;
+				bottom: -2px;
+
+				img {
+				    width: 90%;
+				}
+
+				&~.exp-lettre {
+					z-index:9;
+					bottom: -4px;
+
+					img {
+					    width: 80%;
+					}
+				}
+			}
+		}
 	}
-
-	.items.selected {
-		max-width:100%;
-		width:95%;
-		height:auto;
-
-	}
-
-
-	.items img {
-		margin-left: 0;
-		max-width: 100%;
-		width: 100%;
-	}
-
-	.lettre {
-		position: absolute;
-		bottom: 0;
-		margin: 0;
-		background-color: transparent;
-		color: #09606F;
-	}
-
 }
+
+
 
 
 footer {
