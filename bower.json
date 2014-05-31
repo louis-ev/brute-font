@@ -1,0 +1,9 @@
+{
+  "name": "Brute-font",
+  "version": "0.9.0",
+  "dependencies": {
+    "lesshat": "~3.0.0",
+    "jquery": "latest"
+  }
+}
+

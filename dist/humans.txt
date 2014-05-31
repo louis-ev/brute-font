@@ -1,0 +1,14 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# TEAM
+
+    Louis Eveillard -- idea, concept and development
+
+# THANKS
+
+    Fernand Dutilleux, Émilie Coquard and the creator of Pareidoloop for inspiring me to translate his concept with type.
+
+# TECHNOLOGY COLOPHON
+
+    Pho devstack, OCRAD.js, Processing.js, PNGtoserv, Modernizr, jQuery

@@ -77,7 +77,7 @@ var canvas, ctx, bMouseIsDown = false, iLastX, iLastY,
 var pleaserun = false;
 
 var lastWorker;
-var worker = new Worker('js/vendor/worker.js')
+var worker = new Worker('./scripts/vendor/worker.js')
 function runOCR(image_data, raw_feed){
 	document.getElementById("output").className = 'processing';
 	worker.onmessage = function(e){
