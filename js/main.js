@@ -11,6 +11,14 @@ $(document).ready( function () {
 		}));
 	}
 
+	for(var i=97;i<=122;i++) {
+		$('#imgs').append($('<div/>', {
+			"id": String.fromCharCode(i),
+			"class": "bloc-lettre",
+			"html": "<h3>" + String.fromCharCode(i) + "</h3>",
+		}));
+	}
+
 	$('.exports').click( function () {
 		$(this).toggleClass('selected');
 	});
@@ -27,6 +35,23 @@ $(document).ready( function () {
 		}
 
 		$(this).toggleClass('running');
+
+	});
+
+	$("#showthrough").hover ( function () {
+		$("#imgs .exp-lettre").css("opacity",.02);
+	}, function () {
+		$("#imgs .exp-lettre").css("opacity",1);
+	});
+	$(window).on('scroll', function () {
+		// placer le backtotop en vu
+		var iconoffsettop = $("#showthrough").offset().top
+		var windowscroll = window.pageYOffset;
+		if ( windowscroll > iconoffsettop ) {
+			$("#showthrough .stickycontainer").addClass("sticky");
+		} else {
+			$("#showthrough .stickycontainer").removeClass("sticky");
+		}
 
 	});
 
@@ -54,7 +79,7 @@ var pleaserun = false;
 var lastWorker;
 var worker = new Worker('js/vendor/worker.js')
 function runOCR(image_data, raw_feed){
-	document.getElementById("output").className = 'processing'
+	document.getElementById("output").className = 'processing';
 	worker.onmessage = function(e){
 
 		document.getElementById("output").className = '';
@@ -65,7 +90,7 @@ function runOCR(image_data, raw_feed){
 		if ( e.data.length == 2 ) {
 			//console.log("e.data : " + e.data + " e.data.charCodeAt(0) : " + e.data.charCodeAt(0));
 
-			if (typeof e.data === 'string' && e.data !== '' && ( 65 <= e.data.charCodeAt(0) && e.data.charCodeAt(0) <= 90 )) {
+			if (typeof e.data === 'string' && e.data !== '' && ( (65 <= e.data.charCodeAt(0) && e.data.charCodeAt(0) <= 90) || (97 <= e.data.charCodeAt(0) && e.data.charCodeAt(0) <= 122) )) {
 
 				var ocrvalue = e.data;
 
@@ -83,7 +108,7 @@ function runOCR(image_data, raw_feed){
 					newdiv.children('img').css({
 						"left" : ($('#balls').offset().left - topasteinto.offset().left ),
 						"top" : ($('#balls').offset().top - topasteinto.offset().top ),
-						"opacity" : 0,
+						"opacity" : 1,
 					})
 
 /*
@@ -104,8 +129,8 @@ function runOCR(image_data, raw_feed){
 						$(".bloc-lettre").removeClass("lastClicked");
 						$this.parent(".bloc-lettre").addClass("lastClicked");
 						var animation = new TimelineLite();
-						animation.to( $this, .2, {top: "-120px", width: "90%", onComplete:bottomofstack, onCompleteParams:[$this.parent()] })
-								.to( $this, .3, {top: "0px", clearProps: "width"});
+						animation.to( $this, .2, {top: "-124px", width: "90%", onComplete:bottomofstack, onCompleteParams:[$this.parent()] })
+								.to( $this, .4, {top: "0px", clearProps: "width"});
 					});
 				}
 
@@ -171,9 +196,9 @@ var bezierDrawer = {
 		c.canvas.width  = 89;
 		c.canvas.height = 118;
 
-		c.fillStyle = 'white'
-		c.fillRect(0,0,canvas.width,canvas.height)
-		console.log(canvas.width);
+		c.fillStyle = 'white';
+		c.fillRect(0,0,canvas.width,canvas.height);
+		//console.log(canvas.width);
 		c.fillStyle = 'rgb(255,255,255)'
 		x1 = canvas.width * Math.random();
 		y1 = canvas.height * Math.random();
@@ -190,9 +215,10 @@ var bezierDrawer = {
 	},
 
 	loop : function (canvas, c) {
-		c.beginPath()
-		c.lineWidth = 5
+		c.beginPath();
+		c.lineWidth = 4;
 
+/*
 		x1 = x4;
 		y1 = y4;
 		x2 = canvas.width * Math.random();
@@ -201,15 +227,18 @@ var bezierDrawer = {
 		y3 = canvas.height * Math.random();
 		x4 = canvas.width * Math.random();
 		y4 = canvas.height * Math.random();
-
-/*
-		c.moveTo(x1, y1)
-		c.bezierCurveTo( x2, y2, x3, y3, x4, y4);
-		c.moveTo( x4 + decalageX, y4 + decalageY);
-		c.bezierCurveTo( x3 + decalageX, y3 + decalageY, x2 + decalageX, y2 + decalageY, x1 + decalageX, y1 + decalageY);
-		c.moveTo(x1, y1)
 */
-		c.moveTo(x1, y1)
+
+		x1 = bezierDrawer.updateW(x1);
+		y1 = bezierDrawer.updateH(y1);
+		x2 = bezierDrawer.updateW(x2);
+		y2 = bezierDrawer.updateH(y2);
+		x3 = bezierDrawer.updateW(x3);
+		y3 = bezierDrawer.updateH(y3);
+		x4 = bezierDrawer.updateW(x4);
+		y4 = bezierDrawer.updateH(y4);
+
+		c.moveTo(x1, y1);
 		c.bezierCurveTo( x2, y2, x3, y3, x4, y4);
 
 		c.strokeStyle = "rgb(0,0,0)";
@@ -218,8 +247,16 @@ var bezierDrawer = {
 	},
 
 	erase : function (canvas, c) {
-		c.fillStyle = 'rgb(255,255,255)'
-		c.fillRect(0,0,canvas.width,canvas.height)
+		c.fillStyle = 'rgb(255,255,255)';
+		c.fillRect(0,0,canvas.width,canvas.height);
 
+	},
+
+	updateW : function (value) {
+		return (canvas.width * Math.random());
+	},
+
+	updateH : function (value) {
+		return (canvas.height * Math.random());
 	},
 };
