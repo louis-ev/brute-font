@@ -11,8 +11,8 @@ textarea {
 }
 
 body {
-    background-color: #232323;
-    color: #ECECEE;
+    background-color: #bbb;
+    color: #333;
     font-weight: 400;
     font-size: 1em;
     font-family: "ff-meta-web-pro";
@@ -59,30 +59,54 @@ textarea {
 }
 
 /* ==========================================================================
-   Leporello
+   Brute font
    ========================================================================== */
 
 body {
 	margin:auto;
 	width:100%;
-}
-
-.container {
-	margin:auto;
-	margin-bottom: 40px;
-	width:90%;
-	max-width: 1024px;
+	transition: background-color .4s ease-out;
+	background-color: #eee;
+	min-height: 300vh;
 
 	opacity: 0;
 	transition: opacity .4s;
 
 	&.loaded {
 		opacity: 1;
+
 	}
 
-	main > * {
-		border: 1px solid #eee;
+
+}
+
+.container {
+
+		background-image: -moz-linear-gradient(top, #50abdf, #1f78aa);
+		background-image: -webkit-linear-gradient(top, rgba(248,248,248,1) 33%,rgba(33,33,33,1) 66%);
+		background-image: -o-linear-gradient(top, #50abdf, #1f78aa);
+		background-image: linear-gradient(top, rgba(248,248,248,1) 33%,rgba(23,23,23,1) 66%);
+		background-size: 100% 150%;
+		background-position: 0 0;
+		-webkit-transition: all 0.2s linear;
+		   -moz-transition: all 0.2s linear;
+		     -o-transition: all 0.2s linear;
+		        transition: all 0.2s linear;
+
+	&.top-bound {
+		background-color: #f8f8f8;
 	}
+	&.bottom-bound {
+	  background-position: 0 100%;
+	}
+
+}
+
+main {
+	width:90%;
+	max-width: 1024px;
+	margin: auto;
+	margin-bottom: 40px;
 }
 
 #explications {
@@ -90,8 +114,12 @@ body {
 	height:800px;
 	min-height: 100vh;
 
+	padding-top: 45px;
 
 
+	h1 {
+		margin:0;
+	}
 
 
 
@@ -123,8 +151,8 @@ body {
 				-webkit-transform-origin: center top;
 				top:0;
 				.poly {
-					-webkit-transform: rotate(45deg);
-					transform: rotate(45deg);
+					-webkit-transform: rotate(45deg) scale(0.8);
+					transform: rotate(45deg) scale(0.8);
 				}
 			}
 
@@ -148,8 +176,8 @@ body {
 				bottom:0;
 
 				.poly {
-					-webkit-transform: rotate(-135deg);
-					transform: rotate(-135deg);
+					-webkit-transform: rotate(-135deg) scale(0.8);
+					transform: rotate(-135deg) scale(0.8);
 				}
 			}
 			.buttons {
@@ -161,7 +189,7 @@ body {
 			width: 100%;
 			position: absolute;
 			left: 0;
-			z-index: -1;
+			z-index: 0;
 			.poly {
 					-webkit-transform-origin: center center;
 					transform-origin: center center;
@@ -412,9 +440,15 @@ footer {
 }
 
 
+/*
 
 // debug css code
-//*:nth-child(n) { background-color: rgba(255,0,0,.2); }
+*:nth-child(n) { background-color: rgba(255,0,0,.2); }
+
+	main > * {
+		border: 1px solid #eee;
+	}
+*/
 
 
 

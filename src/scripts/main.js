@@ -8,8 +8,55 @@ function map_range(value, low1, high1, low2, high2) {
     return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
 }
 
+function calcFlecheScale( windowscroll ) {
+		{
+			// modifier le scale des flèches : en scrollant vers le bas ".centered.bottom .fleche" voit son scale passer de 1 à -1
+			var scaleBottom = ( $("#interface .centered.bottom").offset().top + $("#interface .centered.bottom").height() - windowscroll ) / $(window).height();
+			// scaleBottom va de 1 à 0, mais pour retourner la flèche avec le scale il faut de 1 à -1.
+			var scaleBottomNew = map_range(scaleBottom, 0, 1, -.4, .4);
 
-$(document).ready( function () {
+			scaleBottomNew = scaleBottomNew > 1 ? 1 : scaleBottomNew;
+			scaleBottomNew = scaleBottomNew < -1 ? -1 : scaleBottomNew;
+
+			$("#interface .centered.bottom .fleche").transition({ scale: scaleBottomNew }, { queue: false });
+		}
+
+		{
+			var scaleTop = ( $("#interface .centered.top").offset().top - windowscroll ) / $(window).height();
+			// scaleTop va de 1 à 0, mais pour retourner la flèche avec le scale il faut de 1 à -1.
+			var scaleTopNew = map_range(scaleTop, 1, 0, -.4, .4);
+
+			scaleTopNew = scaleTopNew > 1 ? 1 : scaleTopNew;
+			scaleTopNew = scaleTopNew < -1 ? -1 : scaleTopNew;
+
+			$("#interface .centered.top .fleche").transition({ scale: scaleTopNew }, { queue: false });
+		}
+
+
+		// fond du body
+		$(".container").removeClass("bottom-bound");
+		$(".container").removeClass("top-bound");
+		if ( scaleBottomNew < 0 ) {
+			console.log("<0");
+/*
+			var valgris = Math.floor( map_range(scaleBottomNew, 0, -.4, 239, 0) );
+			console.log("valgris :  " + valgris);
+			console.log("rgba(" + valgris + " , " + valgris + " , " + valgris + " , 1)");
+			valgris = valgris < 23 ? 23 : valgris;
+			$("body").css("background-color", "rgba(" + valgris + "," + valgris + "," + valgris + ",1)");
+*/
+			$(".container").addClass("bottom-bound");
+		} else
+
+		if ( scaleTopNew < 0 ) {
+			$(".container").addClass("top-bound");
+		}
+
+}
+
+
+function setInterface() {
+
 
 
 	setTimeout (function () {
@@ -17,15 +64,9 @@ $(document).ready( function () {
 		var scrollInterfaceMiddle = $("#interface").offset().top + ($("#interface").height()/2);
 		var scrollInterface = scrollInterfaceMiddle - $(window).height()/2;
 		$("body").scrollTop( scrollInterface );
-		$(".container").addClass("loaded");
+		$("body").addClass("loaded");
+		calcFlecheScale( scrollInterface );
 	 }, 1000);
-
-	// afficher le container
-
-
-
-
-
 
 	for(var i=65;i<=90;i++) {
 		$lettercontainer.append($('<div/>', {
@@ -68,6 +109,7 @@ $(document).ready( function () {
 		$lettercontainer.find(".exp-lettre").css("opacity",1);
 	});
 
+
 	$(window).on('scroll', function () {
 		// placer le backtotop en vu
 		var iconoffsettop = $("#showthrough").offset().top
@@ -78,37 +120,12 @@ $(document).ready( function () {
 			$("#showthrough .stickycontainer").removeClass("sticky");
 		}
 
-		{
-			// modifier le scale des flèches : en scrollant vers le bas ".centered.bottom .fleche" voit son scale passer de 1 à -1
-			var scaleBottom = ( $("#interface .centered.bottom").offset().top + $("#interface .centered.bottom").height() - $(window).scrollTop() ) / $(window).height();
-			// scaleBottom va de 1 à 0, mais pour retourner la flèche avec le scale il faut de 1 à -1.
-			var scaleBottomNew = map_range(scaleBottom, 0, 1, -.4, .4);
-
-			scaleBottomNew = scaleBottomNew > 1 ? 1 : scaleBottomNew;
-			scaleBottomNew = scaleBottomNew < -1 ? -1 : scaleBottomNew;
-
-			$("#interface .centered.bottom .fleche").transition({ scale: scaleBottomNew }, { queue: false });
-		}
-
-		{
-			var scaleTop = ( $("#interface .centered.top").offset().top - $(window).scrollTop() ) / $(window).height();
-			// scaleTop va de 1 à 0, mais pour retourner la flèche avec le scale il faut de 1 à -1.
-			var scaleTopNew = map_range(scaleTop, 1, 0, -.4, .4);
-
-			scaleTopNew = scaleTopNew > 1 ? 1 : scaleTopNew;
-			scaleTopNew = scaleTopNew < -1 ? -1 : scaleTopNew;
-
-			$("#interface .centered.top .fleche").transition({ scale: scaleTopNew }, { queue: false });
-		}
-
-
-
-
+		calcFlecheScale( windowscroll );
 
 	});
 
 
-});
+}
 
 
 
@@ -224,7 +241,7 @@ function init () {
     $imgH = document.getElementById('imgH');
 
 	bezierDrawer.init(canvas, ctx);
-
+	setInterface();
 }
 
 function runOCRandShow() {
