@@ -31,29 +31,60 @@
 </head>
 <body>
 	<div class="container">
-	    <main>
+
+		<main class=".main">
+	    	<div id="explications">
+
+				<div class="col6">
+					<h1>Brute Font</h1>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, fugiat, aperiam, possimus consequuntur at vitae eum quia ea nam neque numquam nostrum ullam nemo. Dolores, animi eum est minus sequi. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, fugiat, aperiam, possimus consequuntur at vitae eum quia ea nam neque numquam nostrum ullam nemo. Dolores, animi eum est minus sequi. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, fugiat, aperiam, possimus consequuntur at vitae eum quia ea nam neque numquam nostrum ullam nemo. Dolores, animi eum est minus sequi.</p>
+				</div>
+
+		        	<!-- 10000 monkeys writing shakespeare -->
+		        	<!-- brute-force search -->
+
+
+
+
+	    	</div>
+
 	    	<div id="interface">
-	        	<p>Randomly generated shapes interpreted as letters by an OCR algorithm.</p>
-	        	<p>/</p>
-	        	<p>Formes générées aléatoirement et lues comme des lettres par un algorithme d'OCR.</p>
 
-	        	<!-- 10000 monkeys writing shakespeare -->
-
-				<div class="buttons">
-					<h1 id="startstop">&#8595;start&#8595;</h1>
+				<div class="centered top">
+					<svg version="1.1" class="fleche" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+						 viewBox="0 0 235 235" enable-background="new 0 0 235 235" xml:space="preserve">
+					<linearGradient id="SVGID_1_" gradientUnits="userSpaceOnUse" x1="171.632" y1="235.7973" x2="171.632" y2="-61.5226" gradientTransform="matrix(0.7071 -0.7071 0.7071 0.7071 -74.0415 168.0479)">
+						<stop  offset="0" style="stop-color:#232323"></stop>
+						<stop  offset="1" style="stop-color:#fff;stop-opacity:1"></stop>
+					</linearGradient>
+					<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="171.632" y1="235.7973" x2="171.632" y2="-61.5226" gradientTransform="matrix(0.7071 -0.7071 0.7071 0.7071 -74.0415 168.0479)">
+						<stop  offset="0" style="stop-color:#232323;stop-opacity:.1"></stop>
+						<stop  offset="1" style="stop-color:#fff;stop-opacity:.05"></stop>
+					</linearGradient>
+					<polygon class="poly" fill="url(#SVGID_2_)" stroke="url(#SVGID_1_)" stroke-miterlimit="10" points="214,3.5 54.4,3.5 4.5,3.5 4.5,54.2 4.5,54.2
+						4.5,213.8 54.5,214 54.2,89.6 195.6,231.1 231,195.8 89.7,54.5 213.9,54.2 "/>
+					</svg>
 				</div>
 
-				<div class="output">
-
-					<div id="output">
-						<span><strong>Output : </strong></span>
-						<span id="text"></span>
-						<span id="timing"></span>
+				<div class="centered txtintro middle">
+					<button class="buttons flexIntro">
+						<h2 id="help">help</h2>
+					</button>
+					<div class="txt flexIntro">
+			        	<div class="col6">Randomly generated shapes interpreted as letters by an OCR algorithm.</div>
+			        	<div class="col6">Formes générées aléatoirement et lues comme des lettres par un algorithme d'OCR.</div>
 					</div>
+					<button class="buttons flexIntro">
+						<h2 id="startstop">start</h2>
+					</button>
 				</div>
 
-				<div id="canvas">
-					<canvas id="balls" style="image-rendering: -webkit-optimize-contrast !important;"></canvas>
+				<div class="centered bottom">
+					<svg version="1.1" class="fleche" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+						 viewBox="0 0 235 235" enable-background="new 0 0 235 235" xml:space="preserve">
+					<polygon class="poly" fill="url(#SVGID_2_)" stroke="url(#SVGID_1_)" stroke-miterlimit="10" points="214,3.5 54.4,3.5 4.5,3.5 4.5,54.2 4.5,54.2
+						4.5,213.8 54.5,214 54.2,89.6 195.6,231.1 231,195.8 89.7,54.5 213.9,54.2 "/>
+					</svg>
 				</div>
 	    	</div>
 
@@ -66,12 +97,24 @@
 			</div>
 		    <div id="imgs">
 
+				<div id="canvasOutput" class="left">
+					<div class="output">
+						<div id="output">
+							<span><strong>Output : </strong></span>
+							<span id="text"></span>
+							<span id="timing"></span>
+						</div>
+					</div>
+					<div id="canvas">
+						<canvas id="letters" style="image-rendering: -webkit-optimize-contrast !important;"></canvas>
+					</div>
+				</div>
+
+				<div id="letterOutput" class="right">
+
+				</div>
 		    </div>
 	    </main>
-		<hr>
-		<footer>
-			<p>2014 Louis Eveillard</p>
-		</footer>
 	</div>
 
   <!-- substitute:livereload -->

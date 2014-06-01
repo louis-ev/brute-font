@@ -15,5 +15,6 @@ module.exports = {
   'twitter:image': '',
   'twitter:card': '',
   'twitter:site': '',
-  'twitter:creator': ''
+  'twitter:creator': '',
+
 };

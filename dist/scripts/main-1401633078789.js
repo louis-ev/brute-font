@@ -1,14 +1,31 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+// annuler le scroll auto au refresh
+window.onload = function () {
+  setTimeout(function () {
+    scrollTo(0, 0);
+  }, 0);
+};
+function map_range(value, low1, high1, low2, high2) {
+  return low2 + (high2 - low2) * (value - low1) / (high1 - low1);
+}
 $(document).ready(function () {
+  setTimeout(function () {
+    // scroller vers
+    var scrollInterfaceMiddle = $('#interface').offset().top + $('#interface').height() / 2;
+    var scrollInterface = scrollInterfaceMiddle - $(window).height() / 2;
+    $('body').scrollTop(scrollInterface);
+    $('.container').addClass('loaded');
+  }, 1000);
+  // afficher le container
   for (var i = 65; i <= 90; i++) {
-    $('#imgs').append($('<div/>', {
+    $lettercontainer.append($('<div/>', {
       'id': String.fromCharCode(i),
       'class': 'bloc-lettre',
       'html': '<h3>' + String.fromCharCode(i) + '</h3>'
     }));
   }
   for (var i = 97; i <= 122; i++) {
-    $('#imgs').append($('<div/>', {
+    $lettercontainer.append($('<div/>', {
       'id': String.fromCharCode(i),
       'class': 'bloc-lettre',
       'html': '<h3>' + String.fromCharCode(i) + '</h3>'
@@ -29,9 +46,9 @@ $(document).ready(function () {
     $(this).toggleClass('running');
   });
   $('#showthrough').hover(function () {
-    $('#imgs .exp-lettre').css('opacity', 0.02);
+    $lettercontainer.find('.exp-lettre').css('opacity', 0.02);
   }, function () {
-    $('#imgs .exp-lettre').css('opacity', 1);
+    $lettercontainer.find('.exp-lettre').css('opacity', 1);
   });
   $(window).on('scroll', function () {
     // placer le backtotop en vu
@@ -42,12 +59,29 @@ $(document).ready(function () {
     } else {
       $('#showthrough .stickycontainer').removeClass('sticky');
     }
+    {
+      // modifier le scale des flèches : en scrollant vers le bas ".centered.bottom .fleche" voit son scale passer de 1 à -1
+      var scaleBottom = ($('#interface .centered.bottom').offset().top + $('#interface .centered.bottom').height() - $(window).scrollTop()) / $(window).height();
+      // scaleBottom va de 1 à 0, mais pour retourner la flèche avec le scale il faut de 1 à -1.
+      var scaleBottomNew = map_range(scaleBottom, 0, 1, -0.4, 0.4);
+      scaleBottomNew = scaleBottomNew > 1 ? 1 : scaleBottomNew;
+      scaleBottomNew = scaleBottomNew < -1 ? -1 : scaleBottomNew;
+      $('#interface .centered.bottom .fleche').transition({ scale: scaleBottomNew }, { queue: false });
+    }
+    {
+      var scaleTop = ($('#interface .centered.top').offset().top - $(window).scrollTop()) / $(window).height();
+      // scaleTop va de 1 à 0, mais pour retourner la flèche avec le scale il faut de 1 à -1.
+      var scaleTopNew = map_range(scaleTop, 1, 0, -0.4, 0.4);
+      scaleTopNew = scaleTopNew > 1 ? 1 : scaleTopNew;
+      scaleTopNew = scaleTopNew < -1 ? -1 : scaleTopNew;
+      $('#interface .centered.top .fleche').transition({ scale: scaleTopNew }, { queue: false });
+    }
   });
 });
 /* ocrad */
-var c = document.getElementById('balls'), o = c.getContext('2d'), count = 0, countimg = '';
+var c = document.getElementById('letters'), o = c.getContext('2d'), count = 0, countimg = '';
 var nbrtraits = 0;
-var $container = $('#imgs');
+var $lettercontainer = $('#imgs #letterOutput');
 var canvas, ctx, bMouseIsDown = false, iLastX, iLastY, $save, $imgs, $convert, $imgW, $imgH, $sel;
 var pleaserun = false;
 var lastWorker;
@@ -62,19 +96,19 @@ function runOCR(image_data, raw_feed) {
       //console.log("e.data : " + e.data + " e.data.charCodeAt(0) : " + e.data.charCodeAt(0));
       if (typeof e.data === 'string' && e.data !== '' && (65 <= e.data.charCodeAt(0) && e.data.charCodeAt(0) <= 90 || 97 <= e.data.charCodeAt(0) && e.data.charCodeAt(0) <= 122)) {
         var ocrvalue = e.data;
-        if ($('#imgs > #' + ocrvalue + '').length) {
-          var topasteinto = $('#imgs > #' + ocrvalue);
+        if ($lettercontainer.find('#' + ocrvalue + '').length) {
+          var topasteinto = $lettercontainer.find('#' + ocrvalue);
           var newdiv = $('<div/>', { 'class': 'exp-lettre' });
           var baliseimg = Canvas2Image.convertToImage(c, c.width, c.height, 'png');
           newdiv.append(baliseimg);
           newdiv.children('img').css({
-            'left': $('#balls').offset().left - topasteinto.offset().left,
-            'top': $('#balls').offset().top - topasteinto.offset().top,
+            'left': $('#letters').offset().left - topasteinto.offset().left,
+            'top': $('#letters').offset().top - topasteinto.offset().top,
             'opacity': 1
           });
           /*
 					newdiv.css({
-						'bottom' : $('#balls').offset().bottom - topasteinto.offset().bottom
+						'bottom' : $('#letters').offset().bottom - topasteinto.offset().bottom
 					});
 */
           newdiv.appendTo(topasteinto);
@@ -120,7 +154,7 @@ function bottomofstack($me) {
 }
 /* img2canvas */
 function init() {
-  canvas = document.getElementById('balls');
+  canvas = document.getElementById('letters');
   ctx = canvas.getContext('2d');
   $save = document.getElementById('save');
   $convert = document.getElementById('convert');
